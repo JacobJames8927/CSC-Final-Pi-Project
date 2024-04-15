@@ -32,19 +32,12 @@ void loop() {
   Serial.print("Distance Two: ");
   Serial.print(distance_2);
 
-  check_for_human(distance_1, distance_2, population);
+  check_for_human(distance_1, distance_2);
   delay(100);
 }
 
-float check_for_human(float distance_1, float distance_2, float population) {
-  if (distance_1 <= 15) {
-    if (distance_2 <= 15) {
-      population += 1;
-    }
-  }
-  if (distance_2 <= 15) {
-    if (distance_2 <= 15) {
-      population -= 1;
-    }
+float check_for_human(float distance_1, float distance_2) {
+  if (distance_1 <= 15 || distance_2 <= 15) {
+    population += 1;
   }
 }
