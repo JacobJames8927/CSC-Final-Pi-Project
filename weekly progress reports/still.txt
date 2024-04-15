@@ -1,3 +1,12 @@
 23.03.25
 Cloned git repository for the project
 Met with group to discuss roles for next week
+
+23.04.08
+Tested IR sensors (didn't work)
+Switched to ultrasonic sensors
+Wrote code for an ultrasonic sensor as proof of concept
+
+23.04.15
+Wrote code for 2 ultrasonic sensors
+Built circuit in Tinkercad for prototype expo
