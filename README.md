@@ -1,6 +1,5 @@
 Idea:
-  Make a system that tracks how busy Tolliver is using average changes in traffic
-  throughout each day as well as restaurant wait times
+ Make a device to track the traffic in and out of the university book store for a proof of concept.
 
 Method:
-  TBD
+  Ping Ultrasonic sensors are used to track movement on the inside of both doors. This will track the amount of people entering and exiting the building. 
