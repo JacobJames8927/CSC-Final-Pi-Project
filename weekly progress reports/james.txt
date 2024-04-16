@@ -1,3 +1,12 @@
-23.03.25
+24.03.25
 Cloned git repository for the project
 Met with group to discuss roles for next week
+
+24.04.08
+Tested IR sensors (didn't work)
+Switched to ultrasonic sensors
+Wrote code for an ultrasonic sensor as proof of concept
+
+24.04.15
+Built Ping Circuit
+Wrote Ping sensor code and discussed future plans
