@@ -11,3 +11,7 @@ Wrote code for an ultrasonic sensor as proof of concept
 Wrote code for 2 ultrasonic sensors
 Built circuit in Tinkercad
 Put together presentation for prototype expo in class
+
+23.04.22
+Integrated PyQT with VS Code
+Started work on GUI
