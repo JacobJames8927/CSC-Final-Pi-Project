@@ -4,6 +4,7 @@ import re
 from time import sleep
 import tkinter as tk
 import json
+from math import ceil
 
 
 SERIAL_PORT = 'COM7'
@@ -70,7 +71,9 @@ try:
     def read_initial_population():
         global population_today
         if ser:
-            data = ser.readline().decode().strip()
+            max_pop_today = ser.readline().decode().strip()
+            data = ceil(max_pop_today / 2)
+            
             parts = data.split(':')
             if len(parts) == 2:
                 day, count = parts
