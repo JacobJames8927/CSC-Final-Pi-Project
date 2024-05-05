@@ -5,6 +5,7 @@ from time import sleep
 import tkinter as tk
 import json
 
+
 SERIAL_PORT = 'COM7'
 BAUD_RATE = 9600
 population_per_day = {
@@ -41,6 +42,9 @@ def on_submit():
 
 # Load the population data from the file
 population_per_day.update(load_population_data())
+
+current_pop = load_population_data()
+print(current_pop)
 
 try:
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
@@ -86,5 +90,3 @@ except Exception as e:
 finally:
     if ser:
         ser.close()
-
-
