@@ -10,3 +10,10 @@ Wrote code for an ultrasonic sensor as proof of concept
 24.04.15
 Built Ping Circuit
 Wrote Ping sensor code and discussed future plans
+
+24.04.15
+Discussed future plans
+updated check for human function
+added clear switch
+
+24.05.04
