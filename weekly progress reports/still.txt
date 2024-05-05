@@ -19,3 +19,4 @@ Started work on GUI
 
 23.04.29
 Completed framework for GUI
+Integrated data extraction to GUI
