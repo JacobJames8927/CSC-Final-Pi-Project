@@ -15,3 +15,7 @@ Put together presentation for prototype expo in class
 23.04.22
 Integrated PyQT with VS Code
 Started work on GUI
+**Switched from PyQT to TKinter
+
+23.04.29
+Completed framework for GUI
