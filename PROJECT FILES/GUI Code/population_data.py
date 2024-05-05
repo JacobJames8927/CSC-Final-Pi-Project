@@ -1,0 +1,1 @@
+{"Sunday": 0, "Monday": 5, "Tuesday": 0, "Wednesday": 0, "Thursday": 0, "Friday": 5, "Saturday": 0}

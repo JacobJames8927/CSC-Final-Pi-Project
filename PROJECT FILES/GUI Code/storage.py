@@ -45,7 +45,7 @@ def on_submit():
 population_per_day.update(load_population_data())
 
 current_pop = load_population_data()
-print(current_pop)
+
 
 try:
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
@@ -72,16 +72,9 @@ try:
         global population_today
         if ser:
             max_pop_today = ser.readline().decode().strip()
-            data = ceil(max_pop_today / 2)
-            
-            parts = data.split(':')
-            if len(parts) == 2:
-                day, count = parts
-                if day in population_per_day:
-                    population_per_day[day] = int(count)
-            else:
-                population_today = int(data)
-                population_label.config(text=str(population_today))  # Update population label with initial value
+            data = ceil(int(max_pop_today) / 2)
+            population_today = int(data)
+            population_label.config(text=str(population_today))  # Update population label with initial value
 
     read_initial_population()
 
