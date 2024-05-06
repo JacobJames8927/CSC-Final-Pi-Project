@@ -7,6 +7,8 @@ Ping Ultrasonic sensors on the inside of all exterior doors are used to track ho
 User Interface:
 There is one GUI that displays how many people visited the associated building and prompts the user to assign that value to the corresponding day of the week. Another GUI allows the user to create a page for each building being monitored where the building's data (how many people visited each day of the week) is displayed.
 
+
+
 Instructions:
 - Download all files/folders to a new desktop folder
 - Open "Hardware Code", "Ping_Sensor", "Ping_Toggle.ino"
