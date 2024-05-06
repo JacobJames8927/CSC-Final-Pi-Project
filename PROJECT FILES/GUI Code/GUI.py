@@ -7,8 +7,6 @@ from json import JSONDecodeError, load
 class Page:
     # constructor
     def __init__(self, dataFile: str, name: str | None = 'New Room') -> None:
-        # .py file containing appropriate data
-        self.dataFile = dataFile
         # name of the room
         self.name = name
 
@@ -39,17 +37,20 @@ class GUI(Frame):
         self.clearFrame()
         
         # display welcome message
-        GUI.welcomeLabel = Label(self, font=('TkDefaultFont', 15), text="Welcome to Room Traffic Tracker!")
+        GUI.welcomeLabel = Label(self, font=('TkDefaultFont', 15),
+                                 text="Welcome to Room Traffic Tracker!")
         GUI.welcomeLabel.pack(fill=X, pady=50)
 
         # make button for user to make a room
-        GUI.addRoomBtn = Button(self, bg='white', command=lambda: self.addNewPage(), text="Add Room", width=20)
+        GUI.addRoomBtn = Button(self, bg='white', command=lambda: self.addNewPage(),
+                                text="Add Room", width=20)
         # push to bottom of the window
         GUI.addRoomBtn.pack(side=BOTTOM, pady=50)
 
         # display buttons for each room page from last to first
         for page in reversed(self.pages):
-            pageBtn = Button(self, bg='white', command=lambda: self.showPage(page), text=page.name, width=50)
+            pageBtn = Button(self, bg='white', command=lambda current_page=page:
+                            self.showPage(current_page), text=page.name, width=50)
             pageBtn.pack(side=BOTTOM)
 
     # allow user to make new room page
@@ -70,7 +71,8 @@ class GUI(Frame):
                                if self.roomName.get() != '' and self.roomData.get() != '' else None,
                                text="Submit", width=20)
         # or cancel by clicking cancel button
-        GUI.cancelBtn = Button(self, bg='white', command=lambda: self.showWelcomePage(), text='Cancel', width=20)
+        GUI.cancelBtn = Button(self, bg='white', command=lambda: self.showWelcomePage(),
+                               text='Cancel', width=20)
 
         # used for spacing in grid manager
         GUI.spacer1 = Label(self, text="")
@@ -98,7 +100,7 @@ class GUI(Frame):
         self.pages.append(newPage)
 
         # for debugging
-        # print(newPage.data)
+        print(newPage.data)
 
         # go back to welcome page
         # a button for the new room page will be displayed
@@ -109,34 +111,36 @@ class GUI(Frame):
         # delete all displayed widgets
         self.clearFrame()
 
-        # different sub frames for formatting
-        GUI.nameFrame = Frame(self, width=WIDTH)
-        GUI.dataFrame = Frame(self, width=WIDTH)
-        GUI.buttonFrame = Frame(self, width=WIDTH)
-        self.nameFrame.grid(row=0, column=0, sticky=N+E+S+W)
-        self.dataFrame.grid(row=1, column=0, sticky=N+E+S+W)
-        self.buttonFrame.grid(row=2, column=0, sticky=N+E+S+W)
-
         # make label for name of room page
-        GUI.nameLabel = Label(self.nameFrame, font=('TkDefaultFont', 15), text=f"Average Daily {page.name} Traffic")
+        GUI.nameLabel = Label(self, font=('TkDefaultFont', 15),
+                              text=f"Average Daily {page.name} Traffic")
         # and display it
-        GUI.nameLabel.grid(row=0, column=0, sticky=N+E+S+W)
-
+        Label(self, text="").pack(side=TOP, pady=10)
+        GUI.nameLabel.pack(fill=X, side=TOP)
+        
         # display data associated with room page
-        GUI.dayLabel = Label(self.dataFrame, text="Day").grid(row=0, column=0, sticky=N+E+S+W)
-        Label(self.dataFrame, text="").grid(row=0, column=1, sticky=N+E+S+W)
-        GUI.peopleLabel = Label(self.dataFrame, text="# of People").grid(row=0, column=2, sticky=N+E+S+W)
-        for i in range(len(page.data)):
-            dataItem = list(page.data.items())[i]
-            Label(self.dataFrame, text=dataItem[0]).grid(row=i+1, column=0, sticky=N+E+S+W)
-            Label(self.dataFrame, text=":").grid(row=i+1, column=1, sticky=N+E+S+W)
-            Label(self.dataFrame, text=str(dataItem[1])).grid(row=i+1, column=2, sticky=N+E+S+W)
+        GUI.dataTxt = Text(self, bg=self['bg'], height=25, width=40)
+        GUI.dataTxt.insert(END, "Day\t\t")
+        GUI.dataTxt.insert(END, ":\t")
+        GUI.dataTxt.insert(END, "# of People\n")
+
+        try:
+            for key, value in page.data.items():
+                day, num = key, value
+                GUI.dataTxt.insert(END, f"{day}\t\t")
+                GUI.dataTxt.insert(END, ":\t")
+                GUI.dataTxt.insert(END, f"{num}\n")
+        except(AttributeError):
+            pass
+
+        GUI.dataTxt.config(state=DISABLED)
+        GUI.dataTxt.pack(side=LEFT, padx=30)
 
         # make button to go back to welcome page
-        GUI.backButton = Button(self.buttonFrame, bg='white', command=lambda: self.showWelcomePage(), text="Back", width=20)
+        backButton = Button(self, bg='white', command=lambda: self.showWelcomePage(),
+                            text="Back", width=30)
         # and display it
-        GUI.backButton.grid(row=0, column=0, sticky=N+E+S+W)
-        self.grid_anchor(anchor=N)
+        backButton.pack(side=BOTTOM, pady=50)
 
     # delete all displayed widgets
     def clearFrame(self):
