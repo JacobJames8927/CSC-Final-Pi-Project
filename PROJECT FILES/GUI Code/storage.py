@@ -1,9 +1,6 @@
 import serial
-import threading
-import re
-from time import sleep
 import tkinter as tk
-import json
+from json import JSONDecodeError, dump, load
 
 
 SERIAL_PORT = 'COM7'
@@ -20,15 +17,15 @@ population_per_day = {
 population_today = 0
 ser = None  # Global variable to hold the serial port
 
-def save_population_data():
+def save_pop_data():
     with open('population_data.py', 'w') as file:
-        json.dump(population_per_day, file)
+        dump(population_per_day, file)
 
-def load_population_data():
+def load_pop_data():
     try:
         with open('population_data.py', 'r') as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
+            return load(file)
+    except (FileNotFoundError, JSONDecodeError):
         return population_per_day
 
 def on_submit():
@@ -37,18 +34,36 @@ def on_submit():
     if day in population_per_day:
         population_per_day[day] = population_today
         population_label.config(text=str(population_today))
-        save_population_data()  # Save the updated dictionary
+        save_pop_data()  # Save the updated dictionary
         print(population_per_day)
 
-# Load the population data from the file
-population_per_day.update(load_population_data())
+def read_initial_pop():
+    global population_today
+    if ser:
+        data = ser.readline().decode().strip()
+        parts = data.split(':')
+        if len(parts) == 2:
+            day, count = parts
+            if day in population_per_day:
+                population_per_day[day] = int(count)
+        else:
+            population_today = int(data)
+            population_label.config(text=str(population_today))  # Update population label with initial value
 
-current_pop = load_population_data()
-print(current_pop)
 
-try:
+if __name__ == '__main__':
+
+    # Load the population data from the file
+    population_per_day.update(load_pop_data())
+
+    # For debugging
+    # current_pop = population_per_day
+    # print(current_pop)
+
+    # Init serial port
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
 
+    #### Main UI ####
     root = tk.Tk()
     root.title("Population Input")
 
@@ -67,26 +82,10 @@ try:
     submit_button = tk.Button(root, text="Submit", command=on_submit)
     submit_button.grid(row=2, columnspan=2, padx=5, pady=5)
 
-    def read_initial_population():
-        global population_today
-        if ser:
-            data = ser.readline().decode().strip()
-            parts = data.split(':')
-            if len(parts) == 2:
-                day, count = parts
-                if day in population_per_day:
-                    population_per_day[day] = int(count)
-            else:
-                population_today = int(data)
-                population_label.config(text=str(population_today))  # Update population label with initial value
-
-    read_initial_population()
+    # Get initial population
+    read_initial_pop()
 
     root.mainloop()
 
-except Exception as e:
-    print("An error occurred:", e)
-
-finally:
     if ser:
         ser.close()

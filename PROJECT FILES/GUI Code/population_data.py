@@ -1,0 +1,1 @@
+{"Sunday": 1935, "Monday": 1600, "Tuesday": 1540, "Wednesday": 1200, "Thursday": 1980, "Friday": 1745, "Saturday": 2100}

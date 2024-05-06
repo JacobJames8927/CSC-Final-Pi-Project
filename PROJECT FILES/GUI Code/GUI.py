@@ -1,6 +1,7 @@
 # application to display data to user
 
 from tkinter import *
+from json import JSONDecodeError, load
 
 # class for each new page
 class Page:
@@ -10,6 +11,16 @@ class Page:
         self.dataFile = dataFile
         # name of the room
         self.name = name
+
+        # data from dataFile
+        self.data: dict = self.extractData(dataFile)
+
+    def extractData(self, dataFile):
+        try:
+            with open(dataFile, 'r') as file:
+                return load(file)
+        except (FileNotFoundError, JSONDecodeError):
+            pass    # print some error
 
 # class for main GUI
 class GUI(Frame):
@@ -28,7 +39,7 @@ class GUI(Frame):
         self.clearFrame()
         
         # display welcome message
-        GUI.welcomeLabel = Label(self, font=("TkDefaultFont", 15), text="Welcome to Room Traffic Tracker!")
+        GUI.welcomeLabel = Label(self, font=('TkDefaultFont', 15), text="Welcome to Room Traffic Tracker!")
         GUI.welcomeLabel.pack(fill=X, pady=50)
 
         # make button for user to make a room
@@ -57,7 +68,7 @@ class GUI(Frame):
         # user can submit by clicking submit button
         GUI.submitBtn = Button(self, bg='white', command=lambda: self.createPage()  # checks if text entries are empty first
                                if self.roomName.get() != '' and self.roomData.get() != '' else None,
-                               text='Submit', width=20)
+                               text="Submit", width=20)
         # or cancel by clicking cancel button
         GUI.cancelBtn = Button(self, bg='white', command=lambda: self.showWelcomePage(), text='Cancel', width=20)
 
@@ -86,6 +97,9 @@ class GUI(Frame):
         newPage = Page(name=GUI.roomName.get(), dataFile=GUI.roomData.get())
         self.pages.append(newPage)
 
+        # for debugging
+        # print(newPage.data)
+
         # go back to welcome page
         # a button for the new room page will be displayed
         self.showWelcomePage()
@@ -95,19 +109,34 @@ class GUI(Frame):
         # delete all displayed widgets
         self.clearFrame()
 
-        # make labels for name of room page
-        GUI.nameLabel = Label(self, font=("TkDefaultFont", 15), text=f"Average Daily {page.name} Traffic")
-        # and data associated with room page
-        GUI.dataLabel = Label(self, text="Data placeholder")    ######DATA FROM FILE(may need different widget)######
+        # different sub frames for formatting
+        GUI.nameFrame = Frame(self, width=WIDTH)
+        GUI.dataFrame = Frame(self, width=WIDTH)
+        GUI.buttonFrame = Frame(self, width=WIDTH)
+        self.nameFrame.grid(row=0, column=0, sticky=N+E+S+W)
+        self.dataFrame.grid(row=1, column=0, sticky=N+E+S+W)
+        self.buttonFrame.grid(row=2, column=0, sticky=N+E+S+W)
 
-        # display labels
-        GUI.nameLabel.pack(fill=X, pady=50)
-        GUI.dataLabel.pack(anchor=W, padx=50, pady=50)
+        # make label for name of room page
+        GUI.nameLabel = Label(self.nameFrame, font=('TkDefaultFont', 15), text=f"Average Daily {page.name} Traffic")
+        # and display it
+        GUI.nameLabel.grid(row=0, column=0, sticky=N+E+S+W)
+
+        # display data associated with room page
+        GUI.dayLabel = Label(self.dataFrame, text="Day").grid(row=0, column=0, sticky=N+E+S+W)
+        Label(self.dataFrame, text="").grid(row=0, column=1, sticky=N+E+S+W)
+        GUI.peopleLabel = Label(self.dataFrame, text="# of People").grid(row=0, column=2, sticky=N+E+S+W)
+        for i in range(len(page.data)):
+            dataItem = list(page.data.items())[i]
+            Label(self.dataFrame, text=dataItem[0]).grid(row=i+1, column=0, sticky=N+E+S+W)
+            Label(self.dataFrame, text=":").grid(row=i+1, column=1, sticky=N+E+S+W)
+            Label(self.dataFrame, text=str(dataItem[1])).grid(row=i+1, column=2, sticky=N+E+S+W)
 
         # make button to go back to welcome page
-        GUI.backButton = Button(self, bg='white', command=lambda: self.showWelcomePage(), text='Back', width=20)
+        GUI.backButton = Button(self.buttonFrame, bg='white', command=lambda: self.showWelcomePage(), text="Back", width=20)
         # and display it
-        GUI.backButton.pack(side=BOTTOM, pady=50)
+        GUI.backButton.grid(row=0, column=0, sticky=N+E+S+W)
+        self.grid_anchor(anchor=N)
 
     # delete all displayed widgets
     def clearFrame(self):
@@ -116,7 +145,7 @@ class GUI(Frame):
 
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # the default size of the GUI is 800x600
     WIDTH = 800
     HEIGHT = 600
@@ -124,7 +153,7 @@ if __name__ == "__main__":
     # create the window
     window = Tk()
     window.title("Room Traffic Tracker")
-    window.geometry(f"{WIDTH}x{HEIGHT}")
+    window.geometry(f'{WIDTH}x{HEIGHT}')
 
     # create the GUI as a Tkinter canvas inside the window
     g = GUI(window)
