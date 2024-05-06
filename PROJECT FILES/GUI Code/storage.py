@@ -1,6 +1,7 @@
 import serial
 import tkinter as tk
 from json import JSONDecodeError, dump, load
+from math import ceil
 
 
 SERIAL_PORT = 'COM7'
@@ -40,15 +41,10 @@ def on_submit():
 def read_initial_pop():
     global population_today
     if ser:
-        data = ser.readline().decode().strip()
-        parts = data.split(':')
-        if len(parts) == 2:
-            day, count = parts
-            if day in population_per_day:
-                population_per_day[day] = int(count)
-        else:
-            population_today = int(data)
-            population_label.config(text=str(population_today))  # Update population label with initial value
+        max_pop_today = ser.readline().decode().strip()
+        data = ceil(int(max_pop_today) / 2)
+        population_today = int(data)
+        population_label.config(text=str(population_today))  # Update population label with initial value
 
 
 if __name__ == '__main__':
