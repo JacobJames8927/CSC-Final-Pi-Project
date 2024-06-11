@@ -15,7 +15,7 @@ population_per_day = {
     "Friday": 0,
     "Saturday": 0
 }
-population_today = 0
+population_today = 13
 ser = None  # Global variable to hold the serial port
 
 def save_pop_data():
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     # print(current_pop)
 
     # Init serial port
-    ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
+    # ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
 
     #### Main UI ####
     root = tk.Tk()
