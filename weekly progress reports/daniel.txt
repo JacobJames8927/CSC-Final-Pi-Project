@@ -1,3 +1,17 @@
+General: helped organized time/place for group meetings
+
 23.03.25
 Cloned git repository for the project
 Met with group to discuss roles for next week
+
+24.04.08
+Created Check for Human Function.
+
+24.04.15
+Bug testing with 2 ping sensors (messed up delays prevented one from working).
+Added 2nd trig pin to board.
+Worked on making class PowerPoint.
+
+24.04.22
+More bug testing and fixing.
+Added more slides for the PowerPoint for the expo.
